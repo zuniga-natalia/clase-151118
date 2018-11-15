@@ -1,0 +1,32 @@
+<style>
+@import url('https://fonts.googleapis.com/css?family=Allerta+Stencil');
+</style>
+
+
+@media screen and (orientation:portrait){
+        body{
+            background:red;
+        }
+
+}
+
+@keyframe nombre{
+    from {background:blue;}
+    to {background:pink;}
+    
+}
+h1{
+    text-transform: uppercase;
+    font-family: 'Allerta Stencil', italic;
+    animation: nombre .3s infinite alternate;
+}
+h2{
+    font-family: 'Source Sans Pro', sans-serif;
+}
+p{
+    font-size:1rem;
+}
+h2 + p{
+    font-size: 2rem;
+}
+a

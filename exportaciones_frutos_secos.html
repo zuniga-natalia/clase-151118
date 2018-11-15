@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Hola!</title>
+		<!--Lo que sigue es un poco de CSS-->
+		<style>
+			/* Dentro de CSS los comentarios se escriben de esta manera */
+			body{padding:3rem 7rem; font-family: Helvetica, Arial, sans-serif; line-height:1.618034;}
+			@media (orientation:portrait){
+				body{padding:3rem;}
+			}			
+			body.hidden { display:none; }
+			div#mapid{ width: 600px;  height: 400px;  margin:2rem 0rem;}
+		</style>
+		<!-- Acá estamos vinculando con el estilo CSS de una biblioteca de JS-->
+	 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+	   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+	   crossorigin=""/>
+	 	<!-- Acá estamos vinculando con una biblioteca de JS: leaflet.js-->
+	 	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+	   integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+	   crossorigin=""></script>
+	</head>
+	<body class="hidden">
+		<h1>Temblores con jQuery + leaflet.js</h1>
+		<p>Esta página tiene un efecto al cargarse: Un fadeIn de 1000 milisegundos que se logra con el uso de <a href="https://jquery.com/">jQuery</a> (una biblioteca de JS). También, con el uso de jQuery, pinto de rojo el título de primer nivel y los vínculos.</p>
+		<p>Con la misma biblioteca de JS voy por un <a href="https://www.json.org/" title="JavaScript Object Notation">JSON</a> que está en línea, para pasar sus datos a una variable de nombre data (que pueden ver en la Consola de JavaScript). Desde esta variable, obtengo coordenadas y magnitudes de cada uno de los movimientos telúricos sobre 4.5 del último mes (registrados y publicados por <a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php">USGS</a>). Con lo obtenido puedo dibujar círculos con un centro en las coordenadas del epicentro y un radio que depende de la respectiva magnitud del movimiento.</p>
+		<p>Si cuento con un mapa, donde dibujar estos círculos, es gracias a otra biblioteca de JS, cuyo nombre es <a href="https://leafletjs.com/">Leaflet</a>.</p>
+		<div id="mapid"></div>
+		<!--Acá estamos vinculando con otra biblioteca de JS: jQuery-->	
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<!--Lo que sigue es programación que aprovecha las biblitecas de JS vinculadas-->	
+		<script>
+		$(document).ready(function () {
+			$('body').fadeIn(1000).removeClass('hidden');
+			$('h1,a').css('color','red');
+			var data = [
+				{
+					pais:"Italia",
+					numero:105.000.000,
+					lat: 41.8719406 ,
+					lon: 12.56738
+				},
+				{
+					pais:"Alemania",
+					numero:24.000.000,
+					lat: 51.1656914,
+					lon: 10.4515257
+				},
+				{
+					pais:"Turquia",
+					numero:57.000.000,
+					lat: 38.9637451,
+					lon: 35.2433205
+				},
+                {
+                    pais:"Turquia",
+					numero:40.000.000,
+					lat: -14.2350044,
+					lon: -51.9252815
+                
+                },
+                {
+                    pais:"Argentina",
+					numero:15.000.000,
+					lat:  -38.4160957,
+					lon: -63.6166725
+                
+                },
+                {
+                    pais:"España",
+					numero:13.000.000,
+					lat:  40.4636688,
+					lon: -3.7492199
+                
+                },
+                {
+                    pais:"Rusia",
+					numero:11.000.000,
+					lat:  61.5240097,
+					lon: 105.3187561
+                
+                },
+			]
+			console.log(data);
+				var mymap = L.map('mapid').setView([0, 0], 1);
+				L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+					maxZoom: 10,
+					id: 'mapbox.outdoors',
+					attribution: '<a href="https://www.mapbox.com/">Mapbox</a>'
+				}).addTo(mymap);
+				// Creamos algunas variables, sin asignarles contenido de inmediato
+				var lon, lat, p, circle;
+				for (var x = 0; x < data.length ; x++ ){
+					lon = data[x].lon;
+					lat = data[x].lat;
+					p = data[x].numero;				
+					circle = L.circle([lat, lon], {
+					    fillColor: '#000',
+					    fillOpacity: 0.25,
+					    weight:0,
+					    radius : p * 25000
+					}).addTo(mymap);
+				} //acá estamos cerrando el ciclo for que me dibuja cada círculo!
+		}); // acá estamos cerrando la función que es posible por la carga!
+		</script>
+	</body>
+</html>
